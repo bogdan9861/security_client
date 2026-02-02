@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./auth/AuthProvider.tsx";
+
+import Main from "./pages/main/Main";
+import Login from "./pages/login/Login";
+import Profile from "./pages/profile/Profile.jsx";
+import Notifications from "./pages/notifications/Notifications.jsx";
+import Register from "./pages/register/Register.jsx";
+import Tickets from "./pages/tickets/Tickets.jsx";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Main />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/register" element={<Register />}></Route>
+          <Route path="/profile" element={<Profile />}></Route>
+          <Route path="/notifications" element={<Notifications />}></Route>
+          <Route path="/tickets" element={<Tickets />}></Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
