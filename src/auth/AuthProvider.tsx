@@ -6,11 +6,20 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") || "null");
-    if (user) {
-      setUser(user);
-    }
-    
+    const timer = setInterval(() => {
+      const user = JSON.parse(localStorage.getItem("user") || "null");
+      if (user) {
+        setUser(user);
+      }
+
+      if (user && localStorage.getItem("user")) {
+        clearInterval(timer);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, [localStorage.getItem("user")]);
 
   const login = (data) => {
