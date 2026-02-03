@@ -95,16 +95,18 @@ const Profile = () => {
             {/* Actions */}
             <div className="md:col-span-2 space-y-6">
               {/* USER BLOCK */}
-              <Section title="Действия пользователя" icon={<ClipboardList />}>
-                <ActionButton
-                  text="Мои заявки"
-                  onClick={() => navigate("/tickets")}
-                />
-                <ActionButton
-                  text="Создать заявку"
-                  onClick={() => setModals({ ...modals, createTicket: true })}
-                />
-              </Section>
+              {user?.role === "CLIENT" && (
+                <Section title="Действия пользователя" icon={<ClipboardList />}>
+                  <ActionButton
+                    text="Мои заявки"
+                    onClick={() => navigate("/tickets")}
+                  />
+                  <ActionButton
+                    text="Создать заявку"
+                    onClick={() => setModals({ ...modals, createTicket: true })}
+                  />
+                </Section>
+              )}
 
               {/* ADMIN BLOCK */}
               {isAdmin && (
