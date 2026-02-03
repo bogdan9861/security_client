@@ -109,7 +109,7 @@ const Profile = () => {
               )}
 
               {/* ADMIN BLOCK */}
-              {isAdmin && (
+              {isAdmin || user?.role === "OPERATOR" && (
                 <Section title="Панель администратора" icon={<Users />}>
                   <ActionButton
                     text="Управление обращениями"
