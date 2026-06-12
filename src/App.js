@@ -7,8 +7,20 @@ import Profile from "./pages/profile/Profile.jsx";
 import Notifications from "./pages/notifications/Notifications.jsx";
 import Register from "./pages/register/Register.jsx";
 import Tickets from "./pages/tickets/Tickets.jsx";
+import { useEffect } from "react";
+import { enums } from "./enums/index.js";
 
 function App() {
+  useEffect(() => {
+    const theme = localStorage.getItem(enums.THEME);
+
+    if (theme === "light") {
+      document.body.style.filter = "invert()";
+    } else {
+      document.body.style.filter = "";
+    }
+  }, []);
+
   return (
     <AuthProvider>
       <Router>

@@ -9,18 +9,51 @@ import {
   Shield,
   ShieldAlertIcon,
   ShieldCheckIcon,
+  SunMoonIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../app/axios";
 import { useAuth } from "../../auth/AuthProvider.tsx";
 import CreateTicketModal from "../../components/CreateTicketModal.jsx";
+import { enums } from "../../enums/index.js";
 
 const Main = () => {
   const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState(0);
   const [createTicketOpen, setCreateTicketOpen] = useState(false);
+  const [theme, setTheme] = useState("dark");
 
   const { user } = useAuth();
+
+  useEffect(() => {
+    const theme = localStorage.getItem(enums.THEME);
+
+    setTheme(theme);
+  }, []);
+
+  const toggleTheme = () => {
+    localStorage.setItem(enums.THEME, theme === "light" ? "dark" : "light");
+
+    const toggleTheme = window.dispatchEvent(
+      new CustomEvent("themeChanged", {
+        detail: {
+          key: enums.THEME,
+          newValue: theme === "light" ? "dark" : "light",
+          url: window.location.href,
+        },
+      }),
+    );
+
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
+  useEffect(() => {
+    if (theme === "light") {
+      document.body.style.filter = "invert()";
+    } else {
+      document.body.style.filter = "";
+    }
+  }, [theme]);
 
   const getUnreadedCount = async (params) => {
     const result = (await axios.get("/notifications/unreaded")).data;
@@ -46,7 +79,7 @@ const Main = () => {
           <div className="flex items-center gap-5">
             <ShieldCheckIcon />
             <h1 className="text-xl font-semibold tracking-wide">
-              Security Service
+              Служба безопасности
             </h1>
           </div>
 
@@ -71,6 +104,13 @@ const Main = () => {
               className="p-2 rounded-full hover:bg-white/10 transition"
             >
               <UserCircle className="w-7 h-7" />
+            </button>
+
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-white/10 transition"
+            >
+              <SunMoonIcon className="w-7 h-7" />
             </button>
           </div>
         </header>

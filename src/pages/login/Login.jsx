@@ -1,27 +1,38 @@
 import { motion } from "framer-motion";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Loader } from "lucide-react";
 import axios from "../../app/axios.js";
 
 import { useAuth } from "../../auth/AuthProvider.tsx";
 import { Link, useNavigate } from "react-router";
+import { useState } from "react";
 
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
+
     const form = e.currentTarget;
 
-    const res = await axios.post("/users/login", {
-      email: form.email.value,
-      password: form.password.value,
-    });
-
-    console.log(res);
-
-    login(res.data);
-    navigate("/");
+    const res = axios
+      .post("/users/login", {
+        email: form.email.value,
+        password: form.password.value,
+      })
+      .then((res) => {
+        login(res.data);
+        navigate("/");
+      })
+      .catch((e) => {
+        alert("Не удалось войти");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -143,9 +154,10 @@ export default function Login() {
             shadow-lg shadow-blue-500/30
             hover:shadow-blue-500/50
             transition
+            flex items-center justify-center
           "
         >
-          Войти
+          {loading ? <Loader className="rotating" /> : " Войти"}
         </motion.button>
 
         {/* Нижний текст */}

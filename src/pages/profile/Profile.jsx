@@ -108,9 +108,8 @@ const Profile = () => {
                 </Section>
               )}
 
-              {/* ADMIN BLOCK */}
-              {isAdmin || user?.role === "OPERATOR" && (
-                <Section title="Панель администратора" icon={<Users />}>
+              {(isAdmin || user?.role === "OPERATOR") && (
+                <Section title={isAdmin ? "Панель администратора" : "Ваши заявки"} icon={<Users />}>
                   <ActionButton
                     text="Управление обращениями"
                     onClick={() => navigate("/tickets")}
